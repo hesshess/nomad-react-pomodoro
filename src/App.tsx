@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Start } from './components/Start';
 import { Pause } from './components/Pause';
+import Board from './components/Board';
+import Timer from './components/Timer';
+import { useRecoilState } from 'recoil';
+import { msState, playState } from './atom';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -13,89 +17,59 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 const Title = styled.h1`
-  color: rgb(236, 240, 241);
+  color: rgb(255, 255, 255);
   font-size: 80px;
-`;
-
-const CardWrap = styled.div`
-  width: 300px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  color: rgb(236, 240, 241);
-  opacity: 0.7;
-  font-size: 50px;
-`;
-
-const Card = styled.div`
-  background-color: rgb(255, 255, 255);
-  color: rgb(194, 54, 22);
-  height: 150px;
-  width: 100px;
-  border-radius: 5px;
-  font-size: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+  text-shadow: 1px 1px 2px rgb(249, 170, 131);
 `;
 
 const Btn = styled(motion.div)`
   background-color: rgb(249, 170, 131, 0.8);
-  /* color: rgb(236, 240, 241, 0.8); */
-  color: rgb(194, 54, 22);
-  width: 40px;
+  color: rgb(46, 106, 34, 0.8);
+  width: 30px;
   border-radius: 100px;
-  padding: 20px;
+  padding: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
 `;
-
-const BoardWrap = styled.div`
-  width: 200px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-const Board = styled.div`
-  font-size: 30px;
-  color: rgb(255, 255, 255, 0.9);
-  height: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Point = styled.div`
-  color: rgb(236, 240, 241, 0.7);
-`;
-const PointName = styled.div``;
 
 export default function App() {
+  const [isplay, setIsplay] = useRecoilState(playState);
+  const [ms, setMs] = useRecoilState(msState);
+  //   const [round, setRound] = useRecoilState(roundState);
+
+  const onClick = () => {
+    console.log('before : ', isplay);
+    setIsplay((p) => !p);
+    console.log('after : ', isplay);
+  };
+  function minusOneSec() {
+    setMs((prevMs) => prevMs - 1000);
+  }
+  //   let intervalId;
+  //   if (isplay) {
+  //     intervalId = setInterval(minusOneSec, 1000);
+  //   } else {
+  //     clearInterval(intervalId);
+  //   }
+  console.log('beforereder : ', isplay);
   return (
     <>
       <Wrapper>
-        <Title>🍅Pomodoro🍅</Title>
-        <p>1500000ms</p>
-        <CardWrap>
-          <Card>00</Card>:<Card>00</Card>
-        </CardWrap>
-        <Btn>
-          <Start />
+        <Title>Pomodoro🍅</Title>
+        <p></p>
+        <Timer></Timer>
+        <Btn
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.8 }}
+          onClick={onClick}
+        >
+          {isplay ? <Pause /> : <Start />}
         </Btn>
-        <BoardWrap>
-          <Board>
-            <Point>0/4</Point>
-            <PointName>Round</PointName>
-          </Board>
-          <Board>
-            <Point>0/4</Point>
-            <PointName>Goal</PointName>
-          </Board>
-        </BoardWrap>
+        <Board></Board>
       </Wrapper>
     </>
   );
