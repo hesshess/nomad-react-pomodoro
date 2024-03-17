@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import { createGlobalStyle } from 'styled-components';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -67,9 +66,11 @@ table {
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Helmet>
-        <title>POMODORO</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>POMODORO</title>
+        </Helmet>
+      </HelmetProvider>
       <GlobalStyle />
       <App />
     </RecoilRoot>

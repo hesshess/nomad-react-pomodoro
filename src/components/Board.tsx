@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { roundSelector } from '../atom';
+import { useRecoilValue } from 'recoil';
 
 const BoardWrap = styled.div`
   width: 200px;
@@ -22,14 +24,15 @@ const Point = styled.div`
 const PointName = styled.div``;
 
 export default function Board() {
+  const [rounds, goals] = useRecoilValue(roundSelector);
   return (
     <BoardWrap>
       <BoardCard>
-        <Point>0/4</Point>
+        <Point>{rounds}/4</Point>
         <PointName>Round</PointName>
       </BoardCard>
       <BoardCard>
-        <Point>0/12</Point>
+        <Point>{goals}/12</Point>
         <PointName>Goal</PointName>
       </BoardCard>
     </BoardWrap>

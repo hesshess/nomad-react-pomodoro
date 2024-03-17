@@ -1,38 +1,61 @@
 import styled from 'styled-components';
-import { cardNumSelector } from '../atom';
-// import { useRecoilValue } from 'recoil';
+
+import Card from './Card';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  durState,
+  playState,
+  roundState,
+  timeSelector,
+  timeState,
+} from '../atom';
+import { useEffect } from 'react';
 
 const CardWrap = styled.div`
-  width: 300px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+
   align-items: center;
   color: rgb(249, 170, 131);
   font-size: 50px;
 `;
 
-const Card = styled.div`
-  background-color: rgb(249, 170, 131);
-  color: rgb(194, 54, 22);
-  height: 150px;
-  width: 100px;
-  border-radius: 5px;
-  font-size: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
-  -webkit-box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.6);
-`;
+function Timer() {
+  const [min, sec] = useRecoilValue(timeSelector);
+  const duration = useRecoilValue(durState);
+  const [isPlay, setIsPlay] = useRecoilState(playState);
+  const [time, setTime] = useRecoilState(timeState);
+  const setRnd = useSetRecoilState(roundState);
 
-export default function Timer() {
-  //   const [minutes, seconds] = useRecoilValue(cardNumSelector);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime((prevTime) => prevTime + 1);
+    }, 1000);
+
+    if (!isPlay) {
+      clearInterval(timer);
+    }
+    if (time >= duration) {
+      clearInterval(timer);
+      setIsPlay((curr) => false);
+      setTime(0);
+      setRnd((curr) => curr + 1);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [isPlay, setTime, time, duration, setIsPlay, setRnd]);
+
   return (
-    <CardWrap>
-      <Card>00</Card>:<Card>00</Card>
-    </CardWrap>
+    <>
+      <CardWrap>
+        <Card num={min} key={min} />
+        &nbsp; : &nbsp;
+        <Card num={sec} key={sec} />
+      </CardWrap>
+    </>
   );
 }
+
+export default Timer;
