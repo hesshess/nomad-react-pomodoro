@@ -50,9 +50,9 @@ function Timer() {
   return (
     <>
       <CardWrap>
-        <Card num={min} key={min} />
+        <Card num={min} key={'min' + min} />
         &nbsp; : &nbsp;
-        <Card num={sec} key={sec} />
+        <Card num={sec} key={'sec' + sec} />
       </CardWrap>
     </>
   );

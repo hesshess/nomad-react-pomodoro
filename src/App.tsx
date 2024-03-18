@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Board from './components/Board';
 import Timer from './components/Timer';
 import Btn from './components/Btn';
+import Duration from './components/Duration';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -23,6 +24,7 @@ export default function App() {
     <>
       <Wrapper>
         <Title>Pomodoro🍅</Title>
+        <Duration></Duration>
         <Timer></Timer>
         <Btn />
         <Board></Board>
